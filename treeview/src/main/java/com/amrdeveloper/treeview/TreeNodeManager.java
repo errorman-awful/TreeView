@@ -47,15 +47,14 @@ public class TreeNodeManager {
 
     /**
      * Set the current visible tree nodes
+     *
      * @param treeNodes New tree nodes
      */
-    public void setTreeNodes(List<TreeNode> treeNodes) {
-        rootsNodes.clear();
-        rootsNodes.addAll(treeNodes);
-    }
+
 
     /**
      * Get the Current visible Tree nodes
+     *
      * @return The visible Tree nodes main
      */
     public List<TreeNode> getTreeNodes() {
@@ -64,6 +63,7 @@ public class TreeNodeManager {
 
     /**
      * Get TreeNode from the current nodes by index
+     *
      * @param index of node to get it
      * @return TreeNode from by index from current tree nodes if exists
      */
@@ -73,6 +73,7 @@ public class TreeNodeManager {
 
     /**
      * Add new node to the current tree nodes
+     *
      * @param node to add it to the current tree nodes
      * @return true of this node is added
      */
@@ -80,17 +81,30 @@ public class TreeNodeManager {
         return rootsNodes.add(node);
     }
 
-    /**
-     * Clear the current nodes and insert new nodes
-     * @param newNodes to update the current nodes with them
-     */
-    public void updateNodes(List<TreeNode> newNodes) {
+
+    public void updateNodes(List<TreeNode> newRoots) {
         rootsNodes.clear();
-        rootsNodes.addAll(newNodes);
+        for (TreeNode r : newRoots) {
+            addVisible(r);
+        }
+    }
+
+    public void setTreeNodes(List<TreeNode> newRoots) {
+        updateNodes(newRoots);
+    }
+
+    private void addVisible(TreeNode node) {
+        rootsNodes.add(node);
+        if (node.isExpanded()) {
+            for (TreeNode c : node.getChildren()) {
+                addVisible(c);
+            }
+        }
     }
 
     /**
      * Delete one node from the visible nodes
+     *
      * @param node to delete it from the current nodes
      * @return true of this node is deleted
      */
@@ -107,6 +121,7 @@ public class TreeNodeManager {
 
     /**
      * Get the current number of visible nodes
+     *
      * @return the size of visible nodes
      */
     public int size() {
@@ -115,6 +130,7 @@ public class TreeNodeManager {
 
     /**
      * Collapsing node and all of his children
+     *
      * @param node The node to collapse it
      * @return the index of this node if it exists in the list
      */
@@ -138,6 +154,7 @@ public class TreeNodeManager {
 
     /**
      * Expanding node and all of his children
+     *
      * @param node The node to expand it
      * @return the index of this node if it exists in the list
      */
@@ -156,6 +173,7 @@ public class TreeNodeManager {
     /**
      * Update the list for expanded node
      * to expand any child of his children that is already expanded before
+     *
      * @param node that just expanded now
      */
     private void updateExpandedNodeChildren(TreeNode node) {
@@ -170,7 +188,7 @@ public class TreeNodeManager {
 
     /**
      *
-     * @param  node The node to collapse the branch of it
+     * @param node The node to collapse the branch of it
      * @return the index of this node if it exists in the list
      */
     public int collapseNodeBranch(TreeNode node) {
@@ -187,7 +205,8 @@ public class TreeNodeManager {
 
     /**
      * Expanding node full branches
-     * @param  node The node to expand the branch of it
+     *
+     * @param node The node to expand the branch of it
      * @return the index of this node if it exists in the list
      */
     public int expandNodeBranch(TreeNode node) {
@@ -209,7 +228,8 @@ public class TreeNodeManager {
 
     /**
      * Expanding one node branch to until specific level
-     * @param node to expand branch of it until level
+     *
+     * @param node  to expand branch of it until level
      * @param level to expand node branches to it
      */
     public void expandNodeToLevel(TreeNode node, int level) {
@@ -221,10 +241,11 @@ public class TreeNodeManager {
 
     /**
      * Expanding all tree nodes branches to until specific level
+     *
      * @param level to expand all nodes branches to it
      */
     public void expandNodesAtLevel(int level) {
-        for (int i = 0; i < rootsNodes.size() ; i++) {
+        for (int i = 0; i < rootsNodes.size(); i++) {
             TreeNode node = rootsNodes.get(i);
             expandNodeToLevel(node, level);
         }
